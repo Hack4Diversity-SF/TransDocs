@@ -2,7 +2,7 @@
 # Imports
 # ---------------
 
-from flask import Flask, make_response, request, jsonify, render_template, url_for
+from flask import Flask, make_response, request, jsonify, render_template, url_for, redirect
 import json, os
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.mutable import Mutable
@@ -81,11 +81,18 @@ class Doc(db.Model):
     self.sections = sections
     self.language = language
 
+  def api_url(self):
+      ''' 
+        API link to itself
+      '''
+      return '%s://%s/%s/%s/%s' % (request.scheme, request.host, self.language, self.title, self.version)
+
   def asdict(self):
     '''
       Returns the documentation as a dictionary
     '''
     doc_dict = db.Model.asdict(self)
+    doc_dict['api_url'] = self.api_url()
     return doc_dict
 
   def __repr__(self):
@@ -101,8 +108,8 @@ def index():
 
 @app.route('/<language>/')
 def list(language):
-  docs = db.session.query(Doc).filter(Doc.language == language).first()
-  return jsonify(docs.asdict())
+  docs = db.session.query(Doc).filter(Doc.language == language).all()
+  return jsonify({ 'docs': [doc.asdict() for doc in docs] })
 
 @app.route('/<language>/<title>/<version>')
 def doc(language, title, version):
@@ -110,6 +117,11 @@ def doc(language, title, version):
   doc = db.session.query(Doc).filter(filter).first()
   return jsonify(doc.asdict())
 
+@app.route('/save', methods=['POST'])
+def save():
+  if request.method != 'POST':
+    return redirect(url_for('index'))
+  title = request.form['title']
 
 if __name__ == "__main__":
   app.run()
