@@ -28,14 +28,14 @@ Released   : 20130902
 
 var startEditing = function() {
     alert("success");
-/*    $("#main").contentEditable='true'; 
+    $("#main").contentEditable='true'; 
     document.designMode='on'; 
     void 0;
-*/};
+};
 
-$("#edit").click(function{
-    alert("override");
-});
+var displayTranslations = function() {
+    alert("Put a drop down menu of existing translations");
+};
 
 </script>
 
@@ -53,10 +53,16 @@ $("#edit").click(function{
                 {% include "homepage.html" %}
             {% endblock main %}
         </div>
-
+<!--
+        <div id="translationmenu">
+            {% block translationmenu %}
+                {% include "translationmenu.html" %}
+            {% endblock translationmenu %}
+        </div>
+-->
         <div id="buttons">
-            <input type="button" name="edit" value="EDIT TEXT" class="button" onclick="startEditing();">
-            <input type="button" name="translate" value="TRANSLATE" class="button" onclick="alert('translate')">
+            <input type="button" value="EDIT TEXT" class="button" onclick="startEditing();">
+            <input type="button" value="TRANSLATE" class="button" onclick="displayTranslations();">
         <div>
 
     </div>
