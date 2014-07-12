@@ -110,7 +110,7 @@ class Doc(db.Model):
 def translate_text(phrase, from_lang='en', dest_lang='es'):
   url = "https://translate.yandex.net/api/v1.5/tr.json/translate?key=%s&lang=%s-%s&text=%s" % (yandex_key, from_lang, dest_lang, quote_plus(phrase))
   translation = requests.get(url)
-  return json.load(translation.content['text'][0])
+  return json.loads(translation.content)['text'][0]
 
 # -------------------
 # Routes
@@ -151,7 +151,18 @@ def list(language):
 def doc(language, title, version):
   filter = Doc.language == language, Doc.title == title, Doc.version == version
   doc = db.session.query(Doc).filter(*filter).first()
-  return jsonify(doc.asdict())
+  if doc:
+    return jsonify(doc.asdict())
+  else:
+    filter = Doc.language == 'en', Doc.title == title, Doc.version == version
+    doc = db.session.query(Doc).filter(*filter).first()
+    new_doc = Doc(title=doc.title, version=doc.version, language=language, 
+                  description=translate_text(doc.description))
+    db.session.add(new_doc)
+    db.session.commit()
+    payload = new_doc.asdict()
+    payload['new'] = True
+    return jsonify(payload)
 
 if __name__ == "__main__":
   app.run()
