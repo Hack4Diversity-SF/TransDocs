@@ -74,7 +74,7 @@ class Doc(db.Model):
   language = db.Column(db.Unicode())
   __table_args__ = ( db.UniqueConstraint('title', 'version', 'language'), { } )
 
-  def __init__(self, title, version, description=None, sections=None, language='English'):
+  def __init__(self, title, version, description=None, sections=[], language='English'):
     self.title = title
     self.version = version
     self.description = description
@@ -85,7 +85,7 @@ class Doc(db.Model):
       ''' 
         API link to itself
       '''
-      return '%s://%s/%s/%s/%s' % (request.scheme, request.host, self.language, self.title, self.version)
+      return '%s://%s/api/%s/%s/%s' % (request.scheme, request.host, self.language, self.title, self.version)
 
   def asdict(self):
     '''
@@ -106,22 +106,38 @@ class Doc(db.Model):
 def index():
   return render_template('index.html')
 
-@app.route('/<language>/')
+@app.route('/save/', methods=['POST', 'GET'])
+def save():
+  if request.method != 'POST':
+    return redirect(url_for('index'))
+  if request.method == 'POST':
+    doc_data = request.get_json(force=True)
+
+    filter = Doc.language == doc_data['language'], Doc.title == doc_data['title'], Doc.version == doc_data['version']
+    existing_doc = db.session.query(Doc).filter(*filter).first()
+    
+    if not existing_doc:
+      new_doc = Doc(**doc_data)
+      db.session.add(new_doc)
+      db.session.commit()
+      return redirect(new_doc.asdict()['api_url'])
+
+    for (field, value) in doc_data.items():
+      setattr(existing_doc, field, value)
+
+    db.session.commit()
+    return redirect(existing_doc.asdict()['api_url'])
+
+@app.route('/api/<language>/')
 def list(language):
   docs = db.session.query(Doc).filter(Doc.language == language).all()
   return jsonify({ 'docs': [doc.asdict() for doc in docs] })
 
-@app.route('/<language>/<title>/<version>')
+@app.route('/api/<language>/<title>/<version>')
 def doc(language, title, version):
-  filter = Doc.language == language and Doc.title == title and Doc.version == version
-  doc = db.session.query(Doc).filter(filter).first()
+  filter = Doc.language == language, Doc.title == title, Doc.version == version
+  doc = db.session.query(Doc).filter(*filter).first()
   return jsonify(doc.asdict())
-
-@app.route('/save', methods=['POST'])
-def save():
-  if request.method != 'POST':
-    return redirect(url_for('index'))
-  title = request.form['title']
 
 if __name__ == "__main__":
   app.run()
