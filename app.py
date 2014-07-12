@@ -7,6 +7,7 @@ import json, os
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.mutable import Mutable
 from sqlalchemy import types, desc
+from dictalchemy import make_class_dictable
 
 # ---------------
 # Init
@@ -23,7 +24,7 @@ app.secret_key = "ukl\xab\xb7\xc9\x10\xf7\xf1\x03\x087\x0by\x88X'v\xc9\x8c\xc4\x
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///db.sqlite3')
 db = SQLAlchemy(app)
-
+make_class_dictable(db.Model)
 # ---------------
 # Settings
 # ---------------
@@ -80,15 +81,15 @@ class Doc(db.Model):
     self.sections = sections
     self.language = language
 
-  def __repr__(self):
-    return "%s. v. %s" % (self.title, self.version)
-
   def asdict(self):
     '''
       Returns the documentation as a dictionary
     '''
     doc_dict = db.Model.asdict(self)
     return doc_dict
+
+  def __repr__(self):
+    return "%s. v. %s. lang: %s" % (self.title, self.version, self.language)
 
 # -------------------
 # Routes
@@ -100,14 +101,14 @@ def index():
 
 @app.route('/<language>/')
 def list(language):
-  docs = Doc.query.filter(Doc.language == language).all()
-  return render_template('list.html', docs=docs)
+  docs = db.session.query(Doc).filter(Doc.language == language).first()
+  return jsonify(docs.asdict())
 
 @app.route('/<language>/<title>/<version>')
 def doc(language, title, version):
   filter = Doc.language == language and Doc.title == title and Doc.version == version
-  doc = Doc.query.filter(filter).first()
-  return render_template('list.html', docs=doc)
+  doc = db.session.query(Doc).filter(filter).first()
+  return jsonify(doc.asdict())
 
 
 if __name__ == "__main__":
