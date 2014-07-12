@@ -24,6 +24,21 @@ Released   : 20130902
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 
+<script type="text/javascript">
+
+var startEditing = function() {
+    alert("success");
+/*    $("#main").contentEditable='true'; 
+    document.designMode='on'; 
+    void 0;
+*/};
+
+$("#edit").click(function{
+    alert("override");
+});
+
+</script>
+
 
 </head>
 <body>
@@ -38,6 +53,12 @@ Released   : 20130902
                 {% include "homepage.html" %}
             {% endblock main %}
         </div>
+
+        <div id="buttons">
+            <input type="button" name="edit" value="EDIT TEXT" class="button" onclick="startEditing();">
+            <input type="button" name="translate" value="TRANSLATE" class="button" onclick="alert('translate')">
+        <div>
+
     </div>
 </body>
 </html>

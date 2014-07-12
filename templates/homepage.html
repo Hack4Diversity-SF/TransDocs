@@ -1,49 +1,50 @@
 <script type="text/javascript">
 $(document).ready(function() {
-	$.getJSON('sample.json', function(data) {
-		alert(data.widget.debug);
-		//var test = "<h3>'" + data
+
+	var tableofcontents = [];
+
+	$.getJSON('api/en/Flask/0.10.1', function(data) {
+
+		$("#welcome").html(
+			"<h2>" + data.title + "</h2>" + 
+			"<span class='byline'>" + data.description + "</span>"
+		);
+
+		/** Creates list element for each section. Populates lists with
+		  * names of each subsection. Add html text to an array. */
+		var maxSections = data.sections.length;
+		for (var curSection = 0; curSection < maxSections; curSection++) {
+
+			var currentlist = 
+				"<li><h2>" 
+					+ data.sections[curSection].title 
+						+ "</h2></br></br>";
+
+			var maxSubSections = data.sections[curSection].content.length;
+			for (var curSubSection = 0; curSubSection < maxSubSections; curSubSection++)
+				currentlist += 
+					"<p><h3>" +
+						data.sections[curSection].content[curSubSection].title 
+							+ "</h3></br>"
+								+ data.sections[curSection].content[curSubSection].text
+									+"</br></br></p>";
+
+			currentlist += "</li>";
+			tableofcontents.push(currentlist);
+		}
+
+
+		var maxToC = tableofcontents.length;
+		var str = "<ul class='style1'>";
+		for (var i = 0; i < maxToC; i++) {
+			str += tableofcontents[i];
+		}
+		str += "</ul>";
+
+		$("#featured").html(str);
 	});	
 });
 </script>
 
-<div id="welcome">
-	<div class="title">
-		<h2>DOCUMENTATION TITLE</h2>
-		<span class="byline">COMPANY NAME</span>
-	</div>
-	<p>This is <strong>Privy</strong>, a free, fully standards-compliant CSS template designed by <a href="http://templated.co" rel="nofollow">TEMPLATED</a>. The photos in this template are from <a href="http://fotogrph.com/"> Fotogrph</a>. This free template is released under the <a href="http://templated.co/license">Creative Commons Attribution</a> license, so you're pretty much free to do whatever you want with it (even use it commercially) provided you give us credit for it. Have fun :) </p>
-	<ul class="actions">
-		<li><a href="#" class="button">Etiam posuere</a></li>
-	</ul>
-</div>
-<div id="featured">
-	<ul class="style1">
-		<li class="first">
-			<h3>Topic 1</h3>
-			<p>
-				Etiam namse a</br>
-				cursus asfde</br>
-				felis </br>
-				anteere  </br>
-			</p>
-		</li>
-		<li>
-			<h3>Topid 2</h3>
-			<p>
-				marquis tempalse egdas </br>
-				quam </br>
-				liagssdf </br>
-				wosfe dff</br>
-			</p>
-		</li>
-		<li>
-			<h3>Topic 3</h3>
-			<p><a href="#">Consectetuer adipiscing elit. Nam pede erat, porta eu, lobortis eget, tempus et, tellus. Etiam neque. Vivamus consequat lorem at nisl. Nullam non wisi a sem semper eleifend. Etiam non felis. Donec ut ante.</a></p>
-		</li>
-		<li>
-			<h3>Topic 4</h3>
-			<p><a href="#">Etiam non felis. Donec ut ante. In id eros. Suspendisse lacus turpis, cursus egestas at sem. Mauris quam enim, molestie. Donec leo, vivamus fermentum nibh in augue praesent congue rutrum.</a></p>
-		</li>
-	</ul>
-</div>
+<div id="welcome"class="title"> </div>
+<div id="featured">	</div>

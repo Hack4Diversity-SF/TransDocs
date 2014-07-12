@@ -1,9 +1,10 @@
 <script type="text/javascript">
 $(document).ready(function() {
-	$.getJSON('sample.json', function(data) {
-		alert(data.widget.debug);
+	$.getJSON('sample2.json', function(data) {
+		alert(data.docs[1].title);
 		//var test = "<h3>'" + data
 	});	
+	alert('test');
 });
 </script>
 
@@ -19,7 +20,7 @@ $(document).ready(function() {
 </div>
 <div id="featured">
 	<ul class="style1">
-		<li class="first">
+		<li id="contents" class="first">
 			<h3>Topic 1</h3>
 			<p>
 				Etiam namse a</br>

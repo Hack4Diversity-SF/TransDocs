@@ -1,0 +1,22 @@
+{
+	- docs: [
+		- {
+			api_url: "http://localhost:5000/api/en/JQuery/3.0.0",
+			description: " Javascript magic everyone and their mother users jQuery",
+			id: 1,
+			language: "en",
+			sections: null,
+			title: "jQuery",
+			version: "3.0.0"
+		},
+		- {
+			api_url: "http://localhost:5000/api/en/Flask/0.10.4",
+			description: " Javascript magic everyone and their mother users jQuery",
+			id: 2,
+			language: "en",
+			sections: [ ],
+			title: "Flask",
+			version: "0.10.4"
+		}
+	]
+}
