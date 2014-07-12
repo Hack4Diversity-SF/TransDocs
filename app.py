@@ -8,6 +8,8 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.mutable import Mutable
 from sqlalchemy import types, desc
 from dictalchemy import make_class_dictable
+from urllib import quote_plus
+import requests
 
 # ---------------
 # Init
@@ -25,6 +27,9 @@ app.secret_key = "ukl\xab\xb7\xc9\x10\xf7\xf1\x03\x087\x0by\x88X'v\xc9\x8c\xc4\x
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///db.sqlite3')
 db = SQLAlchemy(app)
 make_class_dictable(db.Model)
+
+yandex_key = os.getenv('YANDEX_API_KEY')
+
 # ---------------
 # Settings
 # ---------------
@@ -97,6 +102,15 @@ class Doc(db.Model):
 
   def __repr__(self):
     return "%s. v. %s. lang: %s" % (self.title, self.version, self.language)
+
+# -------------------
+# Helpers
+# -------------------
+
+def translate_text(phrase, from_lang='en', dest_lang='es'):
+  url = "https://translate.yandex.net/api/v1.5/tr.json/translate?key=%s&lang=%s-%s&text=%s" % (yandex_key, from_lang, dest_lang, quote_plus(phrase))
+  translation = requests.get(url)
+  return json.load(translation.content['text'][0])
 
 # -------------------
 # Routes
