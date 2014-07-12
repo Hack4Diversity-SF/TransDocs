@@ -275,7 +275,7 @@
 		text-transform: uppercase;
 		font-weight: 400;
 		font-size: 0.90em;
-		color: #FFF;
+		color: #2980b9;
 	}
 	
 	.button:before
@@ -569,4 +569,19 @@
 		display: block;
 		color: #000;
 		background: red;
+	}
+
+
+/*********************************************************************************/
+/* Edit Button                                                                     */
+/*********************************************************************************/
+
+	#buttons
+	{
+		width: auto;
+		height: auto;
+		position: fixed;
+		display: table-row;
+		float: right;
+		margin: 2em 2em 0em 0em;
 	}
