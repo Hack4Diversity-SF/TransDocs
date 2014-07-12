@@ -109,7 +109,7 @@ def index():
 @app.route('/save/', methods=['POST', 'GET'])
 def save():
   if request.method != 'POST':
-    return redirect(url_for('index'))
+    return 'POST here to save'
   if request.method == 'POST':
     doc_data = request.get_json(force=True)
 
