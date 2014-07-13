@@ -142,6 +142,11 @@ def save():
     db.session.commit()
     return redirect(existing_doc.asdict()['api_url'])
 
+@app.route('/languages/')
+def languages():
+  languages = requests.get('https://translate.yandex.net/api/v1.5/tr.json/getLangs?key=%s&ui=en' % yandex_key)
+  return jsonify(json.loads(languages.content)['langs'])
+
 @app.route('/api/<language>/')
 def list(language):
   docs = db.session.query(Doc).filter(Doc.language == language).all()
