@@ -26,6 +26,8 @@ Released   : 20130902
 
 <script type="text/javascript">
 
+    $("#languagemenu").hide();
+
 var startEditing = function() {
     alert("success");
     $("#main").attr('contentEditable', 'true'); 
@@ -34,7 +36,8 @@ var startEditing = function() {
 };
 
 var displayTranslations = function() {
-    alert("Put a drop down menu of existing translations");
+    $("#languagemenu").show();
+    
 };
 
 </script>
