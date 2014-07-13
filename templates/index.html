@@ -23,18 +23,46 @@ Released   : 20130902
 <!--[if IE 6]><link href="default_ie6.css" rel="stylesheet" type="text/css" /><![endif]-->
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
 
 <script type="text/javascript">
 
     $("#languagemenu").hide();
 
+/*    $(function() {
+        $( "#dialogbox" ).dialog({
+          autoOpen: false,
+          show: {
+            effect: "blind",
+            duration: 1000
+          },
+          hide: {
+            effect: "explode",
+            duration: 1000
+          }
+        });
+    }
+*/
 var startEditing = function() {
-    $("#main").css({"backgroundColor":"#f7dfb4"});
 
+    // Making content editable
     $("#main").attr('contentEditable', 'true');
+
+    // Adding animation to tell user that he/she can begin editing
+    $('.colbg').animate({
+        marginBottom: 0
+    }, 500, 'swing');
+
+    // Adding a button to finish edit which will update the JSON file.
     $("#buttons").append('<input type="button" id="done" value="DONE" class="button">');
     $("#done").click(function(e) {
+
         $("#main").attr('contentEditable', 'false');
+
+        $('.colbg').animate({
+            marginBottom: "-100em"
+        }, 300, 'swing');
+
         var title = $('#welcome h2').html();
         var description = $('#welcome span').html();
         var sections = [];
@@ -62,7 +90,6 @@ var startEditing = function() {
             dataType: 'json',
             data: JSON.stringify(payload),
             success: function() {
-                $("#main").css({"backgroundColor":"#FFF"});
                 $("#buttons input:last-child").remove();
             }
         });
@@ -71,7 +98,7 @@ var startEditing = function() {
 
 var displayTranslations = function() {
     $("#languagemenu").show();
-    
+    //$("#dialogbox").dialog("open");
 };
 
 </script>
@@ -86,15 +113,15 @@ var displayTranslations = function() {
             {% endblock header %}
         </div>
         <div id="main">
+            <div class="colbg"></div>
             {% block main %}
                 {% include "homepage.html" %}
             {% endblock main %}
-
+        </div>
         <div id="buttons">
             <input type="button" value="EDIT TEXT" class="button" onclick="startEditing();">
             <input type="button" value="TRANSLATE" class="button" onclick="displayTranslations();">
         <div>
-        </div>
     </div>
 </body>
 </html>
