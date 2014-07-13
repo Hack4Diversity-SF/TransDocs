@@ -381,9 +381,7 @@
 		width: 100%;
 		height: auto;
 		margin: 2em 2em 0em 0em;
-		position: absolute;;
-		float:right;
-		z-index: 20;
+		bottom: 0;
 	}
 
 /*********************************************************************************/

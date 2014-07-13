@@ -19,30 +19,18 @@ Released   : 20130902
 <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900" rel="stylesheet" />
 <link href="{{ url_for('static', filename='css/default.css') }}" rel="stylesheet" type="text/css" media="all" />
 <link href="{{ url_for('static', filename='css/fonts.css') }}" rel="stylesheet" type="text/css" media="all" />
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
 
 <!--[if IE 6]><link href="default_ie6.css" rel="stylesheet" type="text/css" /><![endif]-->
-
+  
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 <script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
 
 <script type="text/javascript">
+    var inEditMode = false;
 
     $("#languagemenu").hide();
-
-/*    $(function() {
-        $( "#dialogbox" ).dialog({
-          autoOpen: false,
-          show: {
-            effect: "blind",
-            duration: 1000
-          },
-          hide: {
-            effect: "explode",
-            duration: 1000
-          }
-        });
-    }
-*/
 var startEditing = function() {
 
     // Making content editable
@@ -54,51 +42,56 @@ var startEditing = function() {
     }, 500, 'swing');
 
     // Adding a button to finish edit which will update the JSON file.
-    $("#buttons").append('<input type="button" id="done" value="DONE" class="button">');
-    $("#done").click(function(e) {
+    if (!inEditMode) {
+        inEditMode = true;
 
-        $("#main").attr('contentEditable', 'false');
+        $("#buttons").append('<input type="button" id="done" value="DONE" class="button">');
+        $("#done").click(function(e) {
 
-        $('.colbg').animate({
-            marginBottom: "-100em"
-        }, 300, 'swing');
+            inEditMode = false;
 
-        var title = $('#welcome h2').html();
-        var description = $('#welcome span').html();
-        var sections = [];
-        $('#featured ul li').each(function(index, element) {
-            var current = {};
-            current['content'] = [];
-            current['title'] = $(this).children('h2:nth-child(' + String(index+1)+ ')').html();
-            childTitles = $(this).children('h3');
-            childTexts = $(this).children('span');
-            for (var i = 0; i < childTitles.length; i++) {
-                current['content'].push({ title: $(childTitles[i]).html(), text: $(childTexts[i]).html() });
-            };
-            sections.push(current);
-        });
-        var payload = {
-            "title": name,
-            "version": version,
-            "language": language,
-            "sections": sections,
-            "description": description
-        }
-        $.ajax({
-            type: "POST",
-            url: '/save',
-            dataType: 'json',
-            data: JSON.stringify(payload),
-            success: function() {
-                $("#buttons input:last-child").remove();
+            $("#main").attr('contentEditable', 'false');
+
+            $('.colbg').animate({
+                marginBottom: "-100em"
+            }, 300, 'swing');
+
+            var title = $('#welcome h2').html();
+            var description = $('#welcome span').html();
+            var sections = [];
+            $('#featured ul li').each(function(index, element) {
+                var current = {};
+                current['content'] = [];
+                current['title'] = $(this).children('h2:nth-child(' + String(index+1)+ ')').html();
+                childTitles = $(this).children('h3');
+                childTexts = $(this).children('span');
+                for (var i = 0; i < childTitles.length; i++) {
+                    current['content'].push({ title: $(childTitles[i]).html(), text: $(childTexts[i]).html() });
+                };
+                sections.push(current);
+            });
+            var payload = {
+                "title": name,
+                "version": version,
+                "language": language,
+                "sections": sections,
+                "description": description
             }
+            $.ajax({
+                type: "POST",
+                url: '/save',
+                dataType: 'json',
+                data: JSON.stringify(payload),
+                success: function() {
+                    $("#buttons input:last-child").remove();
+                }
+            });
         });
-    });
+    }
 };
 
 var displayTranslations = function() {
     $("#languagemenu").show();
-    //$("#dialogbox").dialog("open");
 };
 
 </script>
@@ -113,15 +106,10 @@ var displayTranslations = function() {
             {% endblock header %}
         </div>
         <div id="main">
-            <div class="colbg"></div>
             {% block main %}
                 {% include "homepage.html" %}
             {% endblock main %}
         </div>
-        <div id="buttons">
-            <input type="button" value="EDIT TEXT" class="button" onclick="startEditing();">
-            <input type="button" value="TRANSLATE" class="button" onclick="displayTranslations();">
-        <div>
     </div>
 </body>
 </html>
