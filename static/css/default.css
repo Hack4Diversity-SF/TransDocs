@@ -347,6 +347,7 @@
 	.tbox2
 	{
 		width: 575px;
+		
 	}
 	
 	.tbox1
@@ -518,6 +519,7 @@
 		margin-bottom: 3em;
 		padding-top: 5em;
 		border-top: 1px solid rgba(0,0,0,0.08);
+		z-index: 1;
 	}
 
 /*********************************************************************************/
@@ -573,15 +575,28 @@
 
 
 /*********************************************************************************/
-/* Edit Button                                                                     */
+/* Edit Button                                                                   */
 /*********************************************************************************/
 
 	#buttons
 	{
-		width: auto;
+		width: 100%;
 		height: auto;
 		position: fixed;
-		display: table-row;
-		float: right;
 		margin: 2em 2em 0em 0em;
+		display: inline-block;
+		float: right;
+		background-color: yellow;
+	}
+
+/*********************************************************************************/
+/* Drop Down Menu                                                                */
+/*********************************************************************************/
+
+	#languagemenu
+	{
+		width: auto;
+		height: auto;
+		background: #2980b9;
+		z-index: 2;
 	}

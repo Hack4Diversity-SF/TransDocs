@@ -46,5 +46,11 @@ $(document).ready(function() {
 });
 </script>
 
-<div id="welcome"class="title"> </div>
-<div id="featured">	</div>
+<div id="welcome"class="title"></div>
+<div id="featured"></div>
+
+<div id="languagemenu">
+    {% block translationmenu %}
+        {% include "translationmenu.html" %}
+    {% endblock translationmenu %}
+</div>
