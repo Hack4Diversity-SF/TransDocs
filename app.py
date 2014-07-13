@@ -147,7 +147,7 @@ def languages():
   languages = requests.get('https://translate.yandex.net/api/v1.5/tr.json/getLangs?key=%s&ui=en' % yandex_key)
   return jsonify(json.loads(languages.content)['langs'])
 
-@app.route('/api/<language>')
+@app.route('/api/<language>/')
 def list(language):
   docs = db.session.query(Doc).filter(Doc.language == language).all()
   return jsonify({ 'docs': [doc.asdict() for doc in docs] })
@@ -162,7 +162,7 @@ def doc(language, title, version):
     filter = Doc.language == 'en', Doc.title == title, Doc.version == version
     doc = db.session.query(Doc).filter(*filter).first()
     new_doc = Doc(title=doc.title, version=doc.version, language=language, 
-                  description=translate_text(doc.description))
+                  description=translate_text(doc.description, from_lang='en', dest_lang=language))
     db.session.add(new_doc)
     db.session.commit()
     payload = new_doc.asdict()
