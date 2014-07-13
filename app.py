@@ -112,6 +112,20 @@ def translate_text(phrase, from_lang='en', dest_lang='es'):
   translation = requests.get(url)
   return json.loads(translation.content)['text'][0]
 
+def translate_sections(sections, dest_lang, from_lang='en'):
+  translated_sections = []
+
+  for sec in sections:
+    title = translate_text(sec['title'], from_lang, dest_lang)
+    translated_content = []
+    for obj in sec['content']:
+      conTitle = translate_text(obj['title'], from_lang, dest_lang)
+      conText = translate_text(obj['text'], from_lang, dest_lang)
+      translated_content.append( { "title": conTitle, "text": conText } )
+    translated_sections.append( { "title": title, "content": translated_content } )
+
+  return translated_sections
+
 # -------------------
 # Routes
 # -------------------
@@ -161,7 +175,8 @@ def doc(language, title, version):
   else:
     filter = Doc.language == 'en', Doc.title == title, Doc.version == version
     doc = db.session.query(Doc).filter(*filter).first()
-    new_doc = Doc(title=doc.title, version=doc.version, language=language, 
+    translated_sections = translate_sections(doc.sections, from_lang='en', dest_lang=language)
+    new_doc = Doc(title=doc.title, version=doc.version, language=language, sections=translated_sections,
                   description=translate_text(doc.description, from_lang='en', dest_lang=language))
     db.session.add(new_doc)
     db.session.commit()
