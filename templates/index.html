@@ -29,7 +29,8 @@ Released   : 20130902
     $("#languagemenu").hide();
 
 var startEditing = function() {
-    alert("success");
+    $("#main").css({"backgroundColor":"#f7dfb4"});
+
     $("#main").attr('contentEditable', 'true');
     $("#buttons").append('<input type="button" id="done" value="DONE" class="button">');
     $("#done").click(function(e) {
@@ -61,7 +62,7 @@ var startEditing = function() {
             dataType: 'json',
             data: JSON.stringify(payload),
             success: function() {
-                alert('Thanks for contributing!');
+                $("#main").css({"backgroundColor":"#FFF"});
                 $("#buttons input:last-child").remove();
             }
         });
@@ -88,11 +89,12 @@ var displayTranslations = function() {
             {% block main %}
                 {% include "homepage.html" %}
             {% endblock main %}
-        </div>
+
         <div id="buttons">
             <input type="button" value="EDIT TEXT" class="button" onclick="startEditing();">
             <input type="button" value="TRANSLATE" class="button" onclick="displayTranslations();">
         <div>
+        </div>
     </div>
 </body>
 </html>

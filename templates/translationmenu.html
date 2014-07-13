@@ -1,6 +1,5 @@
 <script type="text/javascript">
 	$(document).ready(function() {
-
 		// Populating drop down menu
 		$.getJSON('languages/', function(data) {
 			$.each(data, function(key, value) {
@@ -21,10 +20,9 @@
 	};
 </script>
 
-<div>
+
 	<h2 id="languagemenutitle">Select language</h2>
-	<form id="languagebox" action="alert('done');">
+	<form id="languagebox" action="">
 		<select name="languages" id="languages"></select>
 	</form>
 	<input id="applybutton" type="button" value="APPLY" class="button" onclick="translatePage();">
-</div>
