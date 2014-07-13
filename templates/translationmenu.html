@@ -11,6 +11,7 @@
 
 	var translatePage = function(){
 		$("#languagemenu").hide();
+		//$("#languagemenu").css({"display":"none"});
 
 		var newLang = $("#languages").val();
 
@@ -18,11 +19,37 @@
 		language = newLang;
 
 	};
+
+	var hideMenu = function(){
+		$("#languagemenu").hide();
+	};
 </script>
 
+<table id="languagemenu">
+	<th colspan="2">
+		<h2 style="color:white">Select language</h2>
+	</th>
+	<tr>
+		<td>	
+			<form id="languagebox" action="">
+				<select name="languages" id="languages"></select>
+			</form>
+		</td>
+		<td>
+			<input id="applybutton" type="button" value="APPLY" class="button" onclick="translatePage();">
+		</td>
+		<td>
+			<input id="cancelbutton" type="button" value="CANCEL" class="button" onclick="hideMenu();">
+		</td>
+	</tr>
+</table>
 
+<!--
+<div id="languagemenu">
 	<h2 id="languagemenutitle">Select language</h2>
 	<form id="languagebox" action="">
 		<select name="languages" id="languages"></select>
 	</form>
 	<input id="applybutton" type="button" value="APPLY" class="button" onclick="translatePage();">
+</div>
+-->

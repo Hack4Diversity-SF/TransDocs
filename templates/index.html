@@ -31,6 +31,8 @@ Released   : 20130902
     var inEditMode = false;
 
     $("#languagemenu").hide();
+    //$("#languagemenu").css({"display":"none"});
+
 var startEditing = function() {
 
     // Making content editable
@@ -91,7 +93,8 @@ var startEditing = function() {
 };
 
 var displayTranslations = function() {
-    $("#languagemenu").show();
+    $("#languagemenu").fadeIn("fast");
+    //$("#languagemenu").css({"visibility":"visible"});
 };
 
 </script>
