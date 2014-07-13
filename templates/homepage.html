@@ -25,9 +25,9 @@ $(document).ready(function() {
 				currentlist += 
 					"<p><h3>" +
 						data.sections[curSection].content[curSubSection].title 
-							+ "</h3></br>"
+							+ "</h3></br><span>"
 								+ data.sections[curSection].content[curSubSection].text
-									+"</br></br></p>";
+									+"</span></br></br></p>";
 
 			currentlist += "</li>";
 			tableofcontents.push(currentlist);

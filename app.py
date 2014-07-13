@@ -120,7 +120,7 @@ def translate_text(phrase, from_lang='en', dest_lang='es'):
 def index():
   return render_template('index.html')
 
-@app.route('/save/', methods=['POST', 'GET'])
+@app.route('/save', methods=['POST', 'GET'])
 def save():
   if request.method != 'POST':
     return 'POST here to save'

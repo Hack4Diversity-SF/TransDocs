@@ -28,9 +28,43 @@ Released   : 20130902
 
 var startEditing = function() {
     alert("success");
-    $("#main").attr('contentEditable', 'true'); 
-    // document.designMode='on'; 
-    void 0;
+    $("#main").attr('contentEditable', 'true');
+    $("#buttons").append('<input type="button" id="done" value="DONE" class="button">');
+    $("#done").click(function(e) {
+        $("#main").attr('contentEditable', 'false');
+        var title = $('#welcome h2').html();
+        var description = $('#welcome span').html();
+        var sections = [];
+        $('#featured ul li').each(function(index, element) {
+            var current = {};
+            current['content'] = [];
+            current['title'] = $(this).children('h2:nth-child(' + String(index+1)+ ')').html();
+            // current['title'] = $(this).children('h2:nth-child(' + String(index+1)+ ')').html();
+            childTitles = $(this).children('h3');
+            childTexts = $(this).children('span');
+            for (var i = 0; i < childTitles.length; i++) {
+                current['content'].push({ title: $(childTitles[i]).html(), text: $(childTexts[i]).html() });
+            };
+            sections.push(current);
+        });
+        var payload = {
+            "title": "Flask",
+            "version": "0.10.1",
+            "language": "en",
+            "sections": sections,
+            "description": description
+        }
+        $.ajax({
+            type: "POST",
+            url: '/save',
+            dataType: 'json',
+            data: JSON.stringify(payload),
+            success: function() {
+                alert('Thanks for contributing!');
+                $("#buttons input:last-child").remove();
+            }
+        });
+    });
 };
 
 var displayTranslations = function() {
