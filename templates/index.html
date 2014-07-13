@@ -39,7 +39,6 @@ var startEditing = function() {
             var current = {};
             current['content'] = [];
             current['title'] = $(this).children('h2:nth-child(' + String(index+1)+ ')').html();
-            // current['title'] = $(this).children('h2:nth-child(' + String(index+1)+ ')').html();
             childTitles = $(this).children('h3');
             childTexts = $(this).children('span');
             for (var i = 0; i < childTitles.length; i++) {
