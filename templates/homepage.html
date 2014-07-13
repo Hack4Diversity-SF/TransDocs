@@ -1,14 +1,26 @@
 <script type="text/javascript">
+
+	var language = "en";
+	var name = "Flask";
+	var version = "0.10.1";
+
 $(document).ready(function() {
+	loadPage(language, name, version);
+});
+
+var loadPage = function(language, name, version) {
 
 	var tableofcontents = [];
+	var url = 'api/' + language + '/' + name + '/' + version;
 
-	$.getJSON('api/en/Flask/0.10.1', function(data) {
+	$.getJSON(url, function(data) {
+
 
 		$("#welcome").html(
 			"<h2>" + data.title + "</h2>" + 
 			"<span class='byline'>" + data.description + "</span>"
 		);
+
 
 		/** Creates list element for each section. Populates lists with
 		  * names of each subsection. Add html text to an array. */
@@ -43,7 +55,12 @@ $(document).ready(function() {
 
 		$("#featured").html(str);
 	});	
-});
+
+var updatePage = function(newLanguage) {
+	loadPage(newLanguage, name, version);
+};
+};
+
 </script>
 
 <div id="welcome"class="title"></div>

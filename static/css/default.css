@@ -586,7 +586,6 @@
 		margin: 2em 2em 0em 0em;
 		display: inline-block;
 		float: right;
-		background-color: yellow;
 	}
 
 /*********************************************************************************/
@@ -595,8 +594,25 @@
 
 	#languagemenu
 	{
-		width: auto;
-		height: auto;
+		width: 20em;
+		margin-left: auto;
+		margin-right: auto;
 		background: #2980b9;
 		z-index: 2;
+		display: none;
+	}
+
+	#languagemenutitle
+	{
+		color:white;
+	}
+
+	#applybutton
+	{
+		float: right;
+	}
+
+	#languagebox
+	{
+		float: left;
 	}
