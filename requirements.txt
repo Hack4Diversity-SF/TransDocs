@@ -7,5 +7,6 @@ Werkzeug==0.9.6
 dictalchemy==0.1.2.6
 gunicorn==19.0.0
 itsdangerous==0.24
+psycopg2==2.5.3
 requests==2.3.0
 wsgiref==0.1.2
